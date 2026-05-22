@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<head>
+    <title>Усі кімнати</title>
+</head>
+<body>
+    <h1>Список кімнат</h1>
+    {% if room_list %}
+    {% for r in room_list %}
+        <div>
+            <h1>{{r.name}}</h1>
+        </div>
+    {% endfor %}
+    {% endif %}
+</body>
