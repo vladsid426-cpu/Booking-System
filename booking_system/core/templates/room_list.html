@@ -11,4 +11,20 @@
         </div>
     {% endfor %}
     {% endif %}
+
+    <a href="{% url 'reviews' %}"><h1>Відгуки</h1></a>
+    {% if review_list %}
+    {% for r in review_list %}
+        <div>
+            <h1>
+                Ім'я: {{ r.guest_name }} <br>
+                Відгук: {{ r.text }} <br>
+                Дата: {{ r.created_at }} <br>
+                Оцінка: {{ r.rating }}
+            </h1>
+        </div>
+    {% endfor %}
+    {% endif %}
+
+
 </body>

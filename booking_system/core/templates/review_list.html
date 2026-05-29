@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+    <title>Усі кімнати</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Дім</a></h1>
+    <input>Введіть </input>
+    {% if review_list %}
+    {% for r in review_list %}
+        <div>
+            <a href="{% url 'review_detail' r.id%}">
+            <h1>
+                Ім'я: {{ r.guest_name }} <br>
+                Відгук: {{ r.text }} <br>
+                Дата: {{ r.created_at }} <br>
+                Оцінка: {{ r.rating }}
+            </h1>
+            </a>
+        </div>
+    {% empty %}
+        <h1>Відгуків поки немає</h1>
+    {% endfor %}
+    {% endif %}
+
+
+</body>
