@@ -21,6 +21,10 @@ import core.views as views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.room_list, name="room_list"),
+    path('', views.home, name="home"),
+    path('rooms/', views.room_list, name="room_list"),
+    path('rooms/<int:id>/', views.room_detail, name="room_detail"),
+    path('reviews/', views.review_list, name="reviews"),
+    path('reviews/<int:id>/', views.review_detail, name="review_detail"),
 
 ]

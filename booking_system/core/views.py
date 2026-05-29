@@ -7,6 +7,11 @@ def room_list(requests):
 
     return render(requests,'room_list.html',{'room_list':room_list})
 
+def room_detail(requests,id):
+    room = get_object_or_404(Room,id=id)
+
+    return render(requests,'room_detail.html',{'room':room})
+
 def review_list(requests):
     review_list = Review.objects.all()
 
@@ -15,7 +20,7 @@ def review_list(requests):
 def review_detail(requests,id):
     review = get_object_or_404(Review,id=id)
 
-    return render(requests,'review_detail.html',{'review_detail':review_detail})
+    return render(requests,'review_detail.html',{'review':review})
 
 def home(requests):
     room = Room.objects.all()

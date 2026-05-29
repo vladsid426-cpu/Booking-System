@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<head>
+    <title>{{ room.name }}</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Дім</a></h1>
+    {% if room %}
+        <h1>{{ room.name }}</h1>
+        <p>Категорія: {{ room.room_category.category }}</p>
+    {% endif %}
+    <a href="{% url 'room_list' %}">← До списку кімнат</a>
+</body>
