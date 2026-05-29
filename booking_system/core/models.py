@@ -49,3 +49,10 @@ class Review(models.Model):
     class Meta:
             verbose_name = 'Коментарі'
             verbose_name_plural = 'Коментарі'
+
+class BookingStatus(models.Model):
+    status = models.CharField(max_length=100,)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Статус замовлення'
