@@ -7,7 +7,7 @@
     <input>Введіть </input>
     {% for r in reviews %}
         <div>
-            <a href="{% url 'review_detail' r.pk %}">
+            <a href="{% url 'reviews:review_detail' r.pk %}">
             <h1>{{r.username}}</h1>
             </a>
 

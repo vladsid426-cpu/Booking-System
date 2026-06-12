@@ -11,8 +11,8 @@
         </div>
     {% endfor %}
     {% endif %}
-
-    <a href="{% url 'reviews' %}"><h1>Відгуки</h1></a>
+    {% comment %} <a href="{% url 'reviews' %}"><h1>Відгуки</h1></a>  {% endcomment %}
+    <a href="{% url 'reviews:reviews' %}"><h1>Відгуки</h1></a>
     {% if review_list %}
     {% for r in review_list %}
         <div>
