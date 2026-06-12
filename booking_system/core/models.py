@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.contrib.auth.decorators import login_required
+
 
 class RoomCategory(models.Model):
     choice = [
@@ -19,7 +21,7 @@ class RoomCategory(models.Model):
         return f'{self.name}'
 
     
-
+@login_required
 class Room(models.Model):
     number = models.IntegerField(unique=True)
     room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
@@ -33,7 +35,7 @@ class Room(models.Model):
     def __str__(self):
         return f'{self.number} - {self.room_category}'
     
-
+@login_required
 class Booking(models.Model):
     check_in = models.DateTimeField(null=False)
     check_out = models.DateTimeField(null=False)
@@ -49,7 +51,8 @@ class Booking(models.Model):
     
     def __str__(self):
         return f"Замовлення {self.room.name} ({self.start_date.strftime('%Y-%m-%d')})"
-    
+
+@login_required  
 class Review(models.Model):
     guest_name = models.CharField()
     text = models.TextField()
