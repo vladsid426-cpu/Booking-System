@@ -7,38 +7,49 @@ class RoomCategory(models.Model):
         ('premium','преміум'),
         ('presidental','люкс')
     ]
-    category = models.CharField()
+    name = models.CharField()
+    is_active = models.BooleanField(default=True,null=True)
     
     class Meta:
-        verbose_name = 'Категорія кімнати'
+        verbose_name = 'категорія кімнат'
+        verbose_name_plural = 'категорія кімнат'
+
     
-    def str(self):
-        return f'{self.category}'
+    def __str__(self):
+        return f'{self.name}'
+
     
 
 class Room(models.Model):
-    name = models.CharField()
+    number = models.IntegerField(unique=True)
     room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+
+
 
     class Meta:
         verbose_name = 'Назви кімнат'
+        verbose_name_plural = 'назви кімнат'
 
-    def str(self):
-        return f'{self.name,self.room_category}'
+    def __str__(self):
+        return f'{self.number} - {self.room_category}'
     
 
 class Booking(models.Model):
-    start_data = models.DateTimeField(null=False)
-    end_data = models.DateTimeField(null=False)
+    check_in = models.DateTimeField(null=False)
+    check_out = models.DateTimeField(null=False)
+    created_at = models.DateTimeField(null=True)
+    comment = models.TextField(null=True)
+
 
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Замовлення'
+        verbose_name_plural = 'Замовлення'
     
-    def str(self):
-        return f"Замовлення {self.room.name} ({self.start_data.strftime('%Y-%m-%d')})"
-
+    def __str__(self):
+        return f"Замовлення {self.room.name} ({self.start_date.strftime('%Y-%m-%d')})"
+    
 class Review(models.Model):
     guest_name = models.CharField()
     text = models.TextField()
@@ -49,10 +60,3 @@ class Review(models.Model):
     class Meta:
             verbose_name = 'Коментарі'
             verbose_name_plural = 'Коментарі'
-
-class BookingStatus(models.Model):
-    status = models.CharField(max_length=100,)
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Статус замовлення'

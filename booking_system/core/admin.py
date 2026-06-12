@@ -5,4 +5,4 @@ from .models import Booking,Room,RoomCategory,Review
 admin.site.register(Booking)
 admin.site.register(Room)
 admin.site.register(RoomCategory)
-admin.site.register(Review) 
+admin.site.register(Review)

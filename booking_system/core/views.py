@@ -1,40 +1,26 @@
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Booking,Room,RoomCategory,Review
 from .forms import BookingForm
-from .models import Booking, Room, RoomCategory, Review, BookingStatus
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 
 # Create your views here.
-def room_list(request):
-    rooms = Room.objects.select_related("category").order_by("number")
-    q = request.GET.get("q", "").strip()
-    cat = request.GET.get("cat", "").strip()
+def room_list(requests):
+    rooms = Room.objects.select_related("room_category").order_by("number")
+    q = requests.GET.get("q", "").strip()
+    cat = requests.GET.get("cat", "").strip()
     if q:
         rooms = rooms.filter(number__icontains=q)
     if cat:
         rooms = rooms.filter(category_id=cat)
     categories = RoomCategory.objects.filter(is_active=True).order_by("name")
-    return render(request, "core/room_list.html", {
+    return render(requests, "room_list.html", {
         "rooms": rooms, "categories": categories, "q": q, "cat": cat
     })
 
-def room_detail(requests,id):
-    room = get_object_or_404(Room,id=id)
-
-    return render(requests,'room_detail.html',{'room':room})
-
-def review_list(requests):
-    review_list = Review.objects.all()
-
-    return render(requests,'review_list.html',{'review_list':review_list})
-
 def room_detail(request, pk):
-    room = get_object_or_404(Room.objects.select_related("category"), pk=pk)
+    room = get_object_or_404(Room.objects.select_related("room_category"), pk=pk)
 
     if request.method == "POST":
         if not request.user.is_authenticated:
@@ -59,29 +45,33 @@ def room_detail(request, pk):
     else:
         form = BookingForm()
 
-    last_bookings = room.bookings.select_related("user").order_by("-created_at")[:5]
-    return render(request, "core/room_detail.html", {
+    last_bookings = room.booking_set.select_related("user").order_by("-created_at")[:5]
+    return render(request, "room_detail.html", {
         "room": room, "form": form, "last_bookings": last_bookings
     })
+
+
+def review_list(requests):
+    review_list = Review.objects.all()
+
+    return render(requests,'review_list.html',{'review_list':review_list})
+
+def review_detail(requests,id:int):
+    review = get_object_or_404(Review,id=id)
+
+    return render(requests,'review_detail.html',{'review':review})
 
 def home(requests):
     room = Room.objects.all()
     review = Review.objects.all()
 
-    return render(requests,'room_list.html',{'room_list':room,'review_list':review})
+    return render(requests,'home.html',{'room_list':room,'review_list':review})
 
-def my_bookings(request):
+def bookings(request):
     bookings = (
-        Booking.objects.select_related("room", "room__category")
+        Booking.objects.select_related("room", "room_category")
         .filter(user=request.user)
         .order_by("-created_at")
     )
-    return render(request, "core/my_bookings.html", {"bookings": bookings})
+    return render(request, "booking_list.html", {"bookings": bookings})
 
-def booking_cancel(request, pk):
-    booking = get_object_or_404(Booking, pk=pk, user=request.user)
-    if booking.status != BookingStatus.CANCELED:
-        booking.status = BookingStatus.CANCELED
-        booking.save()
-        messages.info(request, "Бронювання скасовано.")
-    return redirect("core:my_bookings")

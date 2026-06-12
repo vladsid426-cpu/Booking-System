@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <head>
-    <title>Усі кімнати</title>
+    <title>Усі відгуки</title>
 </head>
 <body>
     <h1><a href="{% url 'home' %}">Дім</a></h1>
     <input>Введіть </input>
-    {% for r in rooms %}
+    {% for r in reviews %}
         <div>
-            <a href="{% url 'room_detail' r.pk %}"
-            <h1>{{r.number}}</h1>
+            <a href="{% url 'review_detail' r.pk %}">
+            <h1>{{r.username}}</h1>
             </a>
+
         </div>
     {% endfor %}
 

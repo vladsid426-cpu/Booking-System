@@ -5,9 +5,10 @@
 <body>
 <h1><a href="{% url 'home' %}">Дім</a></h1>
 </br>
-<h1> Номер: {{ room.number }}</h1>
-<h1>Категорія: {{ room.room_category.name }}</h1>
-<h1>{{room.created_at}}</h1>
+<h1>{{review.username}}</h1>
+<h1>{{review.text}}</h1>
+<h1>Оцінка {{review.rating}}</h1>
+<h1>{{review.created_at}}</h1>
 <br>
 
 </body>
