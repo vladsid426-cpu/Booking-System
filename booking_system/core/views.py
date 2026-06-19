@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def room_list(requests):
     rooms = Room.objects.select_related("room_category").order_by("number")
     q = requests.GET.get("q", "").strip()
@@ -25,6 +26,7 @@ def room_list(requests):
         "rooms": rooms, "categories": categories, "q": q, "cat": cat
     })
 
+@login_required
 def room_detail(request, pk):
     room = get_object_or_404(Room.objects.select_related("room_category"), pk=pk)
 
@@ -67,6 +69,7 @@ def my_bookings(request):
         .order_by("-created_at")
     )
     return render(request, "my_booking.html", {"bookings": bookings})
+
 @login_required
 def booking_cancel(request, pk: int):
     booking = get_object_or_404(Booking, pk=pk, user=request.user)

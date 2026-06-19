@@ -1,33 +1,26 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login as auth_login
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, AbstractUser
+from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
 
-def register(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            auth_login(request, user)                         # автологін після реєстрації
-            messages.success(request, "Обліковий запис створено. Ласкаво просимо!")
-            return redirect("core:room_list")
-    else:
-        form = UserCreationForm()
-    return render(request, "core/auth/register.html", {"form": form})
+class UserRole(models.TextChoices):
+    USER = "user", _("юзер")
+    MODERATOR = "moderator", _("модер")
+    ADMIN = "admin", _("адмін")
 
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth_login(request, user)
-            messages.success(request, "Ви успішно увійшли в систему.")
-            return redirect("core:room_list")
-    else:
-        form = AuthenticationForm()
-    return render(request, "core/auth/login.html", {"form": form})
 
+class User(AbstractUser):
+    role = models.CharField(
+        max_length=15,
+        choices=UserRole.choices,
+        default=UserRole.USER.value,
+        verbose_name=_("Роль"),
+    )
+    bio = models.TextField(blank=True, verbose_name=_("Біографія"))
+
+    class Meta:
+        verbose_name = _("Користувач")
+        verbose_name_plural = _("Користувачі")
+
+    def __str__(self):
+        return self.username
