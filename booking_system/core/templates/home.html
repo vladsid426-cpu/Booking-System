@@ -3,41 +3,9 @@
     <title>Усі кімнати</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'core:home' %}">Головна</a>
-            <div class="navbar-nav">
-                {% if request.user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'core:my_bookings' %}">Мої бронювання</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'core:logout' %}">Вийти</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'core:login' %}?next={{ request.path }}">Увійти</a></li>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-    <a href="{% url 'rooms' %}"><h1>Список кімнат</h1></a>
-    {% if room_list %}
-    {% for r in room_list %}
-        <div>
-            <h1>{{r.name}}</h1>
-        </div>
-    {% endfor %}
-    {% endif %}
-    {% comment %} <a href="{% url 'reviews' %}"><h1>Відгуки</h1></a>  {% endcomment %}
-    <a href="{% url 'reviews:reviews' %}"><h1>Відгуки</h1></a>
-    {% if review_list %}
-    {% for r in review_list %}
-        <div>
-            <h1>
-                Ім'я: {{ r.guest_name }} <br>
-                Відгук: {{ r.text }} <br>
-                Дата: {{ r.created_at }} <br>
-                Оцінка: {{ r.rating }}
-            </h1>
-        </div>
-    {% endfor %}
-    {% endif %}
+    <h1><a href="{% url 'core:my_bookings' %}">Список замовлень</a></h1>
+    <h1><a href="{% url 'core:rooms' %}">Список кімнат</a></h1>
+    <h1><a href="{% url 'reviews:review' %}">Список відгуків</a></h1>
 
 
 </body>

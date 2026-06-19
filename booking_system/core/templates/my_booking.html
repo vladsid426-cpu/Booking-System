@@ -7,10 +7,11 @@
     <input>Введіть </input>
     {% for b in bookings %}
         <div>
-            <a href="{% url 'core:booking_detail' b.pk%}">
             <h1>ім'я користувача: {{b.user.username}}</h1>
             <h1>Кімната: {{b.room}}</h1>
-            </a>
+            <h1>час в'їзду: {{b.check_in}}</h1>
+            <h1>час виїздлу: {{b.check_out}}</h1>
+            <h1>коли створено: {{b.created_at}}</h1>
         </div>
     {% endfor %}
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 class RoomCategory(models.Model):
@@ -21,7 +21,7 @@ class RoomCategory(models.Model):
         return f'{self.name}'
 
     
-@login_required
+
 class Room(models.Model):
     number = models.IntegerField(unique=True)
     room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
@@ -34,13 +34,26 @@ class Room(models.Model):
 
     def __str__(self):
         return f'{self.number} - {self.room_category}'
-    
-@login_required
+class BookingStatus(models.TextChoices):
+    PENDING = "pending", "Очікує"
+    CONFIRMED = "confirmed", "Підтверджено"
+    CANCELED = "canceled", "Скасовано"    
+    class Meta:
+        verbose_name = 'Статус замовлень'
+        verbose_name_plural = 'Статус Замовлень'
+
 class Booking(models.Model):
+    
     check_in = models.DateTimeField(null=False)
     check_out = models.DateTimeField(null=False)
+    status = models.CharField(choices=BookingStatus.choices)
     created_at = models.DateTimeField(null=True)
     comment = models.TextField(null=True)
+    room = models.ForeignKey(Room,on_delete=models.CASCADE,related_name='room',verbose_name='кімната')
+    user = models.ForeignKey( 
+        User, on_delete=models.PROTECT, related_name="bookings", verbose_name="Користувач"
+    )
+
 
 
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
@@ -50,16 +63,5 @@ class Booking(models.Model):
         verbose_name_plural = 'Замовлення'
     
     def __str__(self):
-        return f"Замовлення {self.room.name} ({self.start_date.strftime('%Y-%m-%d')})"
-
-@login_required  
-class Review(models.Model):
-    guest_name = models.CharField()
-    text = models.TextField()
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
-    created_at = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-            return f"{self.guest_name}-{self.text}"
-    class Meta:
-            verbose_name = 'Коментарі'
-            verbose_name_plural = 'Коментарі'
+        return f"Замовлення {self.created_at} ({self.status})"
+    
