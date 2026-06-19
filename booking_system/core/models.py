@@ -34,13 +34,12 @@ class Room(models.Model):
 
     def __str__(self):
         return f'{self.number} - {self.room_category}'
+    
 class BookingStatus(models.TextChoices):
     PENDING = "pending", "Очікує"
     CONFIRMED = "confirmed", "Підтверджено"
-    CANCELED = "canceled", "Скасовано"    
-    class Meta:
-        verbose_name = 'Статус замовлень'
-        verbose_name_plural = 'Статус Замовлень'
+    CANCELED = "canceled", "Скасовано" 
+
 
 class Booking(models.Model):
     
