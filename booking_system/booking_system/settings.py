@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'core',
     'reviews',
     'widget_tweaks',
-    'auth'
+    
 ]
 
 MIDDLEWARE = [
