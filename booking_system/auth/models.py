@@ -30,3 +30,4 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, "core/auth/login.html", {"form": form})
+
