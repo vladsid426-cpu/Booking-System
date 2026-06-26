@@ -120,5 +120,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'auth:login'
+LOGIN_REDIRECT_URL = 'core:rooms'
+LOGOUT_REDIRECT_URL = 'core:home'
 
